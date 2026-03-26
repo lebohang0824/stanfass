@@ -1,5 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
   // ===============================
+  // Scroll Progress Bar
+  // ===============================
+  const scrollProgress = document.getElementById('scroll-progress');
+  
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    if (scrollProgress) {
+      scrollProgress.style.width = `${scrollPercent}%`;
+    }
+  });
+
+  // ===============================
+  // Cursor Follower
+  // ===============================
+  const cursorFollower = document.getElementById('cursor-follower');
+  
+  if (cursorFollower && window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('mousemove', (e) => {
+      cursorFollower.style.left = `${e.clientX}px`;
+      cursorFollower.style.top = `${e.clientY}px`;
+    });
+
+    const clickableElements = document.querySelectorAll('a, button, .product-card');
+    clickableElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursorFollower.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursorFollower.classList.remove('hover');
+      });
+    });
+  }
+
+  // ===============================
   // Mobile Navigation Toggle
   // ===============================
   const navToggle = document.getElementById('nav-toggle');
@@ -24,12 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCart() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalItems;
+    
+    if (cartToggle) {
+      cartToggle.classList.add('bounce');
+      setTimeout(() => cartToggle.classList.remove('bounce'), 500);
+    }
   }
 
   // ===============================
-  // Add to Bag
+  // Add to Bag (New class: .add-btn)
   // ===============================
-  document.querySelectorAll('.product-card__btn').forEach(btn => {
+  document.querySelectorAll('.add-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const name = btn.dataset.name;
@@ -44,13 +85,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
       updateCart();
 
-      btn.textContent = 'Added!';
-      btn.classList.add('product-card__btn--added');
+      btn.classList.add('added');
       setTimeout(() => {
-        const originalText = `Add to Bag — $${price}`;
-        btn.textContent = originalText;
-        btn.classList.remove('product-card__btn--added');
-      }, 1000);
+        btn.classList.remove('added');
+      }, 1500);
+    });
+  });
+
+  // ===============================
+  // Save/Heart Button
+  // ===============================
+  document.querySelectorAll('.save-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      btn.classList.toggle('active');
+      
+      const svg = btn.querySelector('svg');
+      if (btn.classList.contains('active')) {
+        svg.setAttribute('fill', 'currentColor');
+      } else {
+        svg.setAttribute('fill', 'none');
+      }
+    });
+  });
+
+  // ===============================
+  // Color Swatches
+  // ===============================
+  document.querySelectorAll('.color-swatch').forEach(swatch => {
+    swatch.addEventListener('click', (e) => {
+      const container = swatch.parentElement;
+      container.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      swatch.classList.add('active');
+    });
+  });
+
+  // ===============================
+  // Size Selector
+  // ===============================
+  document.querySelectorAll('.size-selector span').forEach(size => {
+    size.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const container = size.parentElement;
+      container.querySelectorAll('span').forEach(s => s.classList.remove('active'));
+      size.classList.add('active');
     });
   });
 
@@ -71,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filter === 'all' || card.dataset.category === filter) {
           card.style.display = 'block';
           card.style.animation = 'none';
-          card.offsetHeight; // trigger reflow
+          card.offsetHeight;
           card.style.animation = `slideUp 0.4s ease ${i * 50}ms forwards`;
           card.style.opacity = '0';
         } else {
@@ -186,11 +264,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (header) {
       if (currentScroll > 50) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
+        header.classList.add('scrolled');
       } else {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = 'none';
+        header.classList.remove('scrolled');
       }
     }
     
