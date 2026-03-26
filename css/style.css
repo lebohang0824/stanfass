@@ -354,13 +354,19 @@ body.menu-open {
 
 .hero__bg {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 0;
 }
 
 .hero__bg-texture {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   opacity: 0.15;
   background-image: 
     radial-gradient(circle at 20% 30%, var(--color-primary) 0%, transparent 50%),
@@ -372,7 +378,10 @@ body.menu-open {
 
 .hero__bg-gradient {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: 
     linear-gradient(180deg, transparent 0%, rgba(26, 26, 46, 0.8) 100%),
     linear-gradient(135deg, rgba(255, 51, 102, 0.1) 0%, transparent 50%);
@@ -1239,7 +1248,10 @@ body.menu-open {
 
 .product-card__image {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1265,7 +1277,10 @@ body.menu-open {
 
 .product-card__overlay {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: rgba(26, 26, 46, 0.7);
   display: flex;
   align-items: center;
@@ -1454,13 +1469,19 @@ body.menu-open {
 
 .exclusivity__bg {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   pointer-events: none;
 }
 
 .exclusivity__bg-pattern {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background-image: 
     linear-gradient(rgba(255, 51, 102, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 51, 102, 0.03) 1px, transparent 1px);
