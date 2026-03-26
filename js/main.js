@@ -3,21 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile Navigation Toggle
   // ===============================
   const navToggle = document.getElementById('nav-toggle');
-  const navMenu = document.getElementById('nav-menu');
+  const headerNav = document.querySelector('.header__nav');
 
-  if (navToggle && navMenu) {
+  if (navToggle && headerNav) {
     navToggle.addEventListener('click', () => {
       navToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
+      headerNav.classList.toggle('active');
       document.body.classList.toggle('menu-open');
-    });
-
-    document.querySelectorAll('.nav__link').forEach(link => {
-      link.addEventListener('click', () => {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-        document.body.classList.remove('menu-open');
-      });
     });
   }
 
@@ -25,70 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cart Drawer
   // ===============================
   const cartToggle = document.getElementById('cart-toggle');
-  const cartDrawer = document.getElementById('cart-drawer');
-  const cartClose = document.getElementById('cart-close');
-  const cartOverlay = document.getElementById('cart-overlay');
-  const cartContent = document.getElementById('cart-content');
   const cartCount = document.getElementById('cart-count');
-  const cartTotal = document.getElementById('cart-total');
 
   let cart = [];
 
   function updateCart() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
     cartCount.textContent = totalItems;
-    cartTotal.textContent = `$${totalPrice}`;
-
-    if (cart.length === 0) {
-      cartContent.innerHTML = '<div class="cart-empty"><p>Your bag is empty</p></div>';
-    } else {
-      cartContent.innerHTML = cart.map((item, index) => `
-        <div class="cart-item">
-          <div class="cart-item__info">
-            <h4 class="cart-item__name">${item.name}</h4>
-            <span class="cart-item__price">$${item.price}</span>
-          </div>
-          <div class="cart-item__actions">
-            <button class="cart-item__remove" data-index="${index}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      `).join('');
-
-      document.querySelectorAll('.cart-item__remove').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const index = parseInt(e.currentTarget.dataset.index);
-          cart.splice(index, 1);
-          updateCart();
-        });
-      });
-    }
-  }
-
-  if (cartToggle && cartDrawer) {
-    cartToggle.addEventListener('click', () => {
-      cartDrawer.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-
-    const closeCart = () => {
-      cartDrawer.classList.remove('active');
-      document.body.style.overflow = '';
-    };
-
-    if (cartClose) cartClose.addEventListener('click', closeCart);
-    if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
   }
 
   // ===============================
   // Add to Bag
   // ===============================
-  document.querySelectorAll('.product-card__btn--primary').forEach(btn => {
+  document.querySelectorAll('.product-card__btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const name = btn.dataset.name;
@@ -104,8 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
       updateCart();
 
       btn.textContent = 'Added!';
+      btn.classList.add('product-card__btn--added');
       setTimeout(() => {
-        btn.textContent = 'Add to Bag';
+        const originalText = `Add to Bag — $${price}`;
+        btn.textContent = originalText;
+        btn.classList.remove('product-card__btn--added');
       }, 1000);
     });
   });
@@ -123,13 +67,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const filter = btn.dataset.filter;
 
-      productCards.forEach(card => {
+      productCards.forEach((card, i) => {
         if (filter === 'all' || card.dataset.category === filter) {
           card.style.display = 'block';
-          setTimeout(() => card.classList.add('animate-in'), 10);
+          card.style.animation = 'none';
+          card.offsetHeight; // trigger reflow
+          card.style.animation = `slideUp 0.4s ease ${i * 50}ms forwards`;
+          card.style.opacity = '0';
         } else {
           card.style.display = 'none';
-          card.classList.remove('animate-in');
         }
       });
     });
@@ -146,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const target = document.querySelector(href);
       if (target) {
-        const navHeight = document.querySelector('.nav').offsetHeight;
+        const header = document.querySelector('.header');
+        const navHeight = header ? header.offsetHeight : 0;
         const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
         
         window.scrollTo({
@@ -167,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const delay = entry.target.dataset.animationDelay || 0;
         setTimeout(() => {
@@ -178,9 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, observerOptions);
 
-  // Elements to animate
   const animateElements = document.querySelectorAll(
-    '.hero__content, .products__header, .product-card, .feature, .newsletter__content, .footer__brand, .footer__social'
+    '.hero__content, .products__header, .product-card, .newsletter__content, .footer__brand, .footer__social'
   );
 
   animateElements.forEach(el => {
@@ -189,71 +135,96 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===============================
-  // Nav Background on Scroll
+  // Hero Counter Animation
   // ===============================
+  const counterElements = document.querySelectorAll('.hero__stat-num');
+  let countersAnimated = false;
+
+  function animateCounters() {
+    if (countersAnimated) return;
+    countersAnimated = true;
+
+    counterElements.forEach(el => {
+      const target = parseInt(el.dataset.count);
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = Math.floor(current).toLocaleString();
+      }, 16);
+    });
+  }
+
+  // Trigger counter animation when hero is in view
+  const heroSection = document.querySelector('.hero');
+  if (heroSection) {
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(animateCounters, 500);
+          heroObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    heroObserver.observe(heroSection);
+  }
+
+  // ===============================
+  // Header Scroll Effect
+  // ===============================
+  const header = document.querySelector('.header');
   let lastScroll = 0;
-  const nav = document.querySelector('.nav');
-  
+
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
     
-    if (currentScroll > 50) {
-      nav.classList.add('nav--scrolled');
-    } else {
-      nav.classList.remove('nav--scrolled');
-    }
-    
-    if (currentScroll > lastScroll && currentScroll > 200) {
-      nav.classList.add('nav--hidden');
-    } else {
-      nav.classList.remove('nav--hidden');
+    if (header) {
+      if (currentScroll > 50) {
+        header.style.background = 'rgba(255, 255, 255, 0.98)';
+        header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
+      } else {
+        header.style.background = 'rgba(255, 255, 255, 0.98)';
+        header.style.boxShadow = 'none';
+      }
     }
     
     lastScroll = currentScroll;
   });
 
   // ===============================
-  // Product Card Hover Interactions
+  // Product Card Tilt on Hover
   // ===============================
-  const productCardsAll = document.querySelectorAll('.product-card');
+  const cards = document.querySelectorAll('.product-card');
   
-  productCardsAll.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.classList.add('product-card--hovered');
+  cards.forEach(card => {
+    const image = card.querySelector('.product-card__image');
+    if (!image) return;
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
-    
+
     card.addEventListener('mouseleave', () => {
-      card.classList.remove('product-card--hovered');
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+      card.style.transition = 'transform 0.5s ease';
     });
-  });
 
-  // ===============================
-  // Button Hover Sound Effect (Visual)
-  // ===============================
-  const buttons = document.querySelectorAll('.btn');
-  
-  buttons.forEach(btn => {
-    btn.addEventListener('mouseenter', () => {
-      btn.classList.add('btn--hovered');
-    });
-    
-    btn.addEventListener('mouseleave', () => {
-      btn.classList.remove('btn--hovered');
-    });
-  });
-
-  // ===============================
-  // Link Hover Underline Animation
-  // ===============================
-  const links = document.querySelectorAll('.nav__link, .footer__social-link, .footer__links a, .footer__links-col a');
-  
-  links.forEach(link => {
-    link.addEventListener('mouseenter', () => {
-      link.classList.add('link--hovered');
-    });
-    
-    link.addEventListener('mouseleave', () => {
-      link.classList.remove('link--hovered');
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.1s ease';
     });
   });
 
@@ -264,16 +235,82 @@ document.addEventListener('DOMContentLoaded', () => {
   if (newsletterForm) {
     newsletterForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const input = newsletterForm.querySelector('input');
-      const btn = newsletterForm.querySelector('button');
+      const input = newsletterForm.querySelector('.newsletter__input');
+      const btn = newsletterForm.querySelector('.newsletter__btn');
       
-      if (input.value) {
-        btn.textContent = 'Subscribed!';
+      if (input && input.value) {
+        btn.textContent = 'You\'re In!';
+        btn.style.background = '#0f0';
+        btn.style.borderColor = '#0f0';
+        btn.style.color = '#000';
         input.value = '';
         setTimeout(() => {
           btn.textContent = 'Subscribe';
-        }, 2000);
+          btn.style.background = '';
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }, 2500);
       }
     });
   }
+
+  // ===============================
+  // Parallax on Hero Splatters
+  // ===============================
+  const splatters = document.querySelectorAll('.hero__splatter');
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroHeight = heroSection ? heroSection.offsetHeight : 0;
+    
+    if (scrolled < heroHeight) {
+      splatters.forEach((splatter, i) => {
+        const speed = 0.1 + (i * 0.05);
+        splatter.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    }
+  });
+
+  // ===============================
+  // Glitch Effect on Logo Hover
+  // ===============================
+  const logo = document.querySelector('.header__logo');
+  if (logo) {
+    logo.addEventListener('mouseenter', () => {
+      logo.style.animation = 'glitchText 0.3s linear infinite';
+    });
+    logo.addEventListener('mouseleave', () => {
+      logo.style.animation = '';
+    });
+  }
+
+  // ===============================
+  // Mobile Menu Styles Injection
+  // ===============================
+  const style = document.createElement('style');
+  style.textContent = `
+    .header__nav.active {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem;
+      gap: 1rem;
+      border-bottom: 2px solid #1a1a1a;
+    }
+    .header__menu-btn.active span:first-child {
+      transform: rotate(45deg) translate(2px, 3px);
+    }
+    .header__menu-btn.active span:last-child {
+      transform: rotate(-45deg) translate(2px, -3px);
+    }
+    .body.menu-open {
+      overflow: hidden;
+    }
+  `;
+  document.head.appendChild(style);
 });
