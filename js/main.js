@@ -1,12 +1,101 @@
 document.addEventListener('DOMContentLoaded', () => {
   // ===============================
+  // Randomize Product Images by Type
+  // ===============================
+  const imagesByType = {
+    shirts: [
+      'images/shirt-1.jpeg',
+      'images/shirt-2.jpeg',
+      'images/shirt-3.jpeg',
+      'images/shirt-4.jpeg',
+      'images/shirt-5.jpeg',
+      'images/shirt-6.jpeg',
+      'images/shirt-7.jpeg',
+      'images/shirt-8.jpeg',
+      'images/shirt-9.jpeg',
+      'images/shirt-10.jpeg',
+      'images/shirt-11.jpeg',
+      'images/shirt-12.jpeg',
+      'images/shirt-13.jpeg',
+      'images/shirt-14.jpeg',
+      'images/shirt-15.jpeg',
+      'images/shirt-16.jpeg',
+      'images/shirt-17.jpeg',
+      'images/shirt-18.jpeg',
+    ],
+    heavyTsirts: [
+      'images/heavy-tshirt-1.jpeg',
+      'images/heavy-tshirt-2.jpeg',
+      'images/heeavy-tshirt-3.jpeg',
+    ],
+    cropTops: [
+      'images/crop-top-1.jpeg',
+      'images/crop-top-2.jpeg',
+      'images/crop-top-3.jpeg',
+      'images/crop-top-4.jpeg',
+    ],
+    jackets: [
+      'images/jacket-2.jpeg',
+      'images/jacket-4.jpeg',
+      'images/jacket-5.jpeg',
+      'images/jacket-6.jpeg',
+      'images/jacket-7.jpeg',
+      'images/jacket-8.jpeg',
+    ],
+    hoodies: ['images/hoody-1.jpeg', 'images/hoody-2.jpeg'],
+    jerseys: [
+      'images/jersey-1.jpeg',
+      'images/jersey-2.jpeg',
+      'images/jersey-3.jpeg',
+    ],
+    bucketHats: [
+      'images/bucket-hat-1.jpeg',
+      'images/bucket-hat-2.jpeg',
+      'images/bucket-hat-3.jpeg',
+    ],
+  };
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function randomizeProductImages() {
+    const productCards = document.querySelectorAll('.product-card');
+    const usedImages = new Set();
+
+    const allTypeArrays = [
+      ...imagesByType.shirts,
+      ...imagesByType.heavyTsirts,
+      ...imagesByType.cropTops,
+      ...imagesByType.jackets,
+      ...imagesByType.hoodies,
+      ...imagesByType.jerseys,
+      ...imagesByType.bucketHats,
+    ];
+    const shuffledAll = shuffle([...allTypeArrays]);
+
+    productCards.forEach((card, index) => {
+      const img = card.querySelector('.product-card__image img');
+      if (img && shuffledAll[index]) {
+        img.src = shuffledAll[index];
+      }
+    });
+  }
+
+  randomizeProductImages();
+  // ===============================
   // Scroll Progress Bar
   // ===============================
   const scrollProgress = document.getElementById('scroll-progress');
-  
+
   window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
     const scrollPercent = (scrollTop / docHeight) * 100;
     if (scrollProgress) {
       scrollProgress.style.width = `${scrollPercent}%`;
@@ -17,15 +106,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cursor Follower
   // ===============================
   const cursorFollower = document.getElementById('cursor-follower');
-  
+
   if (cursorFollower && window.matchMedia('(pointer: fine)').matches) {
     document.addEventListener('mousemove', (e) => {
       cursorFollower.style.left = `${e.clientX}px`;
       cursorFollower.style.top = `${e.clientY}px`;
     });
 
-    const clickableElements = document.querySelectorAll('a, button, .product-card');
-    clickableElements.forEach(el => {
+    const clickableElements = document.querySelectorAll(
+      'a, button, .product-card',
+    );
+    clickableElements.forEach((el) => {
       el.addEventListener('mouseenter', () => {
         cursorFollower.classList.add('hover');
       });
@@ -60,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCart() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalItems;
-    
+
     if (cartToggle) {
       cartToggle.classList.add('bounce');
       setTimeout(() => cartToggle.classList.remove('bounce'), 500);
@@ -70,13 +161,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===============================
   // Add to Bag (New class: .add-btn)
   // ===============================
-  document.querySelectorAll('.add-btn').forEach(btn => {
+  document.querySelectorAll('.add-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const name = btn.dataset.name;
       const price = parseInt(btn.dataset.price);
 
-      const existingItem = cart.find(item => item.name === name);
+      const existingItem = cart.find((item) => item.name === name);
       if (existingItem) {
         existingItem.quantity++;
       } else {
@@ -95,11 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===============================
   // Save/Heart Button
   // ===============================
-  document.querySelectorAll('.save-btn').forEach(btn => {
+  document.querySelectorAll('.save-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       btn.classList.toggle('active');
-      
+
       const svg = btn.querySelector('svg');
       if (btn.classList.contains('active')) {
         svg.setAttribute('fill', 'currentColor');
@@ -112,10 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===============================
   // Color Swatches
   // ===============================
-  document.querySelectorAll('.color-swatch').forEach(swatch => {
+  document.querySelectorAll('.color-swatch').forEach((swatch) => {
     swatch.addEventListener('click', (e) => {
       const container = swatch.parentElement;
-      container.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      container
+        .querySelectorAll('.color-swatch')
+        .forEach((s) => s.classList.remove('active'));
       swatch.classList.add('active');
     });
   });
@@ -123,11 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===============================
   // Size Selector
   // ===============================
-  document.querySelectorAll('.size-selector span').forEach(size => {
+  document.querySelectorAll('.size-selector span').forEach((size) => {
     size.addEventListener('click', (e) => {
       e.stopPropagation();
       const container = size.parentElement;
-      container.querySelectorAll('span').forEach(s => s.classList.remove('active'));
+      container
+        .querySelectorAll('span')
+        .forEach((s) => s.classList.remove('active'));
       size.classList.add('active');
     });
   });
@@ -138,9 +233,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterBtns = document.querySelectorAll('.products__filter');
   const productCards = document.querySelectorAll('.product-card');
 
-  filterBtns.forEach(btn => {
+  filterBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
+      filterBtns.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
 
       const filter = btn.dataset.filter;
@@ -162,21 +257,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===============================
   // Smooth Scroll
   // ===============================
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
       if (href === '#') return;
-      
+
       e.preventDefault();
       const target = document.querySelector(href);
       if (target) {
         const header = document.querySelector('.header');
         const navHeight = header ? header.offsetHeight : 0;
-        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
-        
+        const targetPosition =
+          target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
         window.scrollTo({
           top: targetPosition,
-          behavior: 'smooth'
+          behavior: 'smooth',
         });
       }
     });
@@ -188,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const observerOptions = {
     root: null,
     rootMargin: '0px',
-    threshold: 0.1
+    threshold: 0.1,
   };
 
   const observer = new IntersectionObserver((entries) => {
@@ -204,10 +300,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }, observerOptions);
 
   const animateElements = document.querySelectorAll(
-    '.hero__content, .products__header, .product-card, .newsletter__content, .footer__brand, .footer__social'
+    '.hero__content, .products__header, .product-card, .newsletter__content, .footer__brand, .footer__social',
   );
 
-  animateElements.forEach(el => {
+  animateElements.forEach((el) => {
     el.classList.add('animate-on-scroll');
     observer.observe(el);
   });
@@ -222,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (countersAnimated) return;
     countersAnimated = true;
 
-    counterElements.forEach(el => {
+    counterElements.forEach((el) => {
       const target = parseInt(el.dataset.count);
       const duration = 2000;
       const step = target / (duration / 16);
@@ -242,14 +338,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Trigger counter animation when hero is in view
   const heroSection = document.querySelector('.hero');
   if (heroSection) {
-    const heroObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setTimeout(animateCounters, 500);
-          heroObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
+    const heroObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(animateCounters, 500);
+            heroObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 },
+    );
     heroObserver.observe(heroSection);
   }
 
@@ -261,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
+
     if (header) {
       if (currentScroll > 50) {
         header.classList.add('scrolled');
@@ -269,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         header.classList.remove('scrolled');
       }
     }
-    
+
     lastScroll = currentScroll;
   });
 
@@ -277,8 +376,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Product Card Tilt on Hover
   // ===============================
   const cards = document.querySelectorAll('.product-card');
-  
-  cards.forEach(card => {
+
+  cards.forEach((card) => {
     const image = card.querySelector('.product-card__image');
     if (!image) return;
 
@@ -313,9 +412,9 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const input = newsletterForm.querySelector('.newsletter__input');
       const btn = newsletterForm.querySelector('.newsletter__btn');
-      
+
       if (input && input.value) {
-        btn.textContent = 'You\'re In!';
+        btn.textContent = "You're In!";
         btn.style.background = '#0f0';
         btn.style.borderColor = '#0f0';
         btn.style.color = '#000';
@@ -338,10 +437,10 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const heroHeight = heroSection ? heroSection.offsetHeight : 0;
-    
+
     if (scrolled < heroHeight) {
       splatters.forEach((splatter, i) => {
-        const speed = 0.1 + (i * 0.05);
+        const speed = 0.1 + i * 0.05;
         splatter.style.transform = `translateY(${scrolled * speed}px)`;
       });
     }
