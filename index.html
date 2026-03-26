@@ -3,45 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Stanfass - Bold Creative Studio">
+    <meta name="description" content="Stanfass - Limited Edition Streetwear">
     <meta name="author" content="Stanfass">
     <meta name="robots" content="index, follow">
     <title>Stanfass</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="announcement-bar">
-        <span>Free worldwide shipping on orders over $200 · Limited drops · Once they're gone, they're gone forever</span>
-    </div>
-
-    <header class="nav">
-        <div class="nav__container">
-            <a href="#" class="nav__logo">
-                <span class="nav__logo-text">SF</span>
-            </a>
+    <header class="header">
+        <div class="header__container">
+            <a href="#" class="header__logo">Stanfass</a>
             
-            <nav class="nav__menu" id="nav-menu">
-                <a href="#products" class="nav__link">Shop</a>
-                <a href="#about" class="nav__link">About</a>
+            <nav class="header__nav">
+                <a href="#products" class="header__link">Shop</a>
+                <a href="#" class="header__link">About</a>
             </nav>
             
-            <div class="nav__actions">
-                <button class="nav__cart-btn" id="cart-toggle" aria-label="Open cart">
+            <div class="header__actions">
+                <button class="header__cart-btn" id="cart-toggle" aria-label="Open cart">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M6 6h15l-1.5 9h-12z"/>
                         <circle cx="9" cy="20" r="1"/>
                         <circle cx="18" cy="20" r="1"/>
                         <path d="M6 6L5 3H2"/>
                     </svg>
-                    <span class="nav__cart-count" id="cart-count">0</span>
+                    <span class="header__cart-count" id="cart-count">0</span>
                 </button>
-                <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu">
-                    <span class="nav__toggle-line"></span>
-                    <span class="nav__toggle-line"></span>
-                    <span class="nav__toggle-line"></span>
+                <button class="header__menu-btn" id="nav-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
                 </button>
             </div>
         </div>
@@ -73,78 +66,20 @@
         </div>
     </div>
 
-    <section class="hero" id="shop">
+    <section class="hero">
+        <div class="hero__bg"></div>
         <div class="hero__content">
-            <span class="hero__label">New Season Drops</span>
-            <h1 class="hero__title">
-                <span class="hero__title-line">The Collection</span>
-                <span class="hero__title-line hero__title-line--accent">Volume II</span>
-            </h1>
+            <span class="hero__label">New Season</span>
+            <h1 class="hero__title">Volume II</h1>
             <p class="hero__tagline">Limited edition streetwear. Once they're gone, they're gone forever.</p>
-            <div class="hero__cta">
-                <a href="#products" class="btn btn--primary">Shop Now</a>
-                <a href="#about" class="btn btn--ghost">Our Story</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="about" id="about">
-        <div class="about__container">
-            <div class="about__header">
-                <span class="about__label">Our Philosophy</span>
-                <h2 class="about__title">
-                    <span class="about__title-line">Loud Luxury.</span>
-                    <span class="about__title-line">Not a Style.</span>
-                    <span class="about__title-line">A Stance.</span>
-                </h2>
-            </div>
-            
-            <div class="about__content">
-                <div class="about__story">
-                    <p class="about__lead">We don't chase relevance. We define it. Stanfass is where unapologetic ambition meets refined execution—crafted for those who refuse to blend in.</p>
-                    
-                    <p class="about__text">Born from a singular vision: to transform the ordinary into the extraordinary. We're not here to tick boxes or follow playbooks. Every project is a statement, every collaboration a rebellion against the mundane.</p>
-                    
-                    <p class="about__text">Our philosophy is simple—boldness in design isn't optional. It's the only way we know how to work.</p>
-                </div>
-                
-                <div class="about__values">
-                    <div class="about__value">
-                        <span class="about__value-number">01</span>
-                        <h3 class="about__value-title">Exclusivity</h3>
-                        <p class="about__value-text">We work with visionaries, not everyone. Our portfolio is a curated collection of partners who understand the value of distinction.</p>
-                    </div>
-                    
-                    <div class="about__value">
-                        <span class="about__value-number">02</span>
-                        <h3 class="about__value-title">Precision</h3>
-                        <p class="about__value-text">Every pixel is intentional. Every interaction is refined. We obsess over details others overlook because excellence is non-negotiable.</p>
-                    </div>
-                    
-                    <div class="about__value">
-                        <span class="about__value-number">03</span>
-                        <h3 class="about__value-title">Vision</h3>
-                        <p class="about__value-text">We don't just execute—we anticipate. Our forward-thinking approach ensures your brand stays ahead of tomorrow's trends.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="about__statement">
-                <div class="about__statement-content">
-                    <span class="about__statement-label">The Stanfass Declaration</span>
-                    <blockquote class="about__statement-quote">
-                        "We exist to create the undeniable. Work that stops conversations, demands attention, and refuses to be ignored."
-                    </blockquote>
-                </div>
-                <div class="about__statement-decoration"></div>
-            </div>
+            <a href="#products" class="btn btn--primary">Shop Now</a>
         </div>
     </section>
 
     <section class="products" id="products">
         <div class="products__container">
             <div class="products__header">
-                <h2 class="products__title">Shop All</h2>
+                <h2 class="products__title">All Products</h2>
                 <div class="products__filters">
                     <button class="products__filter active" data-filter="all">All</button>
                     <button class="products__filter" data-filter="apparel">Apparel</button>
@@ -155,171 +90,160 @@
 
             <div class="products__grid">
                 <article class="product-card" data-category="apparel">
-                    <div class="product-card__image-wrapper">
-                        <span class="product-card__badge">1 of 50</span>
-                        <div class="product-card__image">
-                            <img src="images/hoody-1.jpeg" alt="SF Oversized Hoodie">
-                        </div>
+                    <div class="product-card__image">
+                        <img src="images/hoody-1.jpeg" alt="SF Oversized Hoodie">
                         <div class="product-card__actions">
-                            <button class="product-card__btn product-card__btn--primary" data-name="SF Oversized Hoodie" data-price="189">Add to Bag</button>
-                            <button class="product-card__btn product-card__btn--secondary">Quick View</button>
+                            <button class="product-card__btn" data-name="SF Oversized Hoodie" data-price="189">Add to Bag — $189</button>
                         </div>
                     </div>
                     <div class="product-card__info">
                         <h3 class="product-card__name">SF Oversized Hoodie</h3>
-                        <div class="product-card__meta">
-                            <span class="product-card__price">$189</span>
-                            <span class="product-card__status">Pre-order</span>
-                        </div>
+                        <span class="product-card__price">$189</span>
                     </div>
                 </article>
 
                 <article class="product-card" data-category="apparel">
-                    <div class="product-card__image-wrapper">
-                        <span class="product-card__badge">1 of 25</span>
-                        <div class="product-card__image">
-                            <img src="images/shirt-1.jpeg" alt="Signature Tee - Midnight">
-                        </div>
+                    <div class="product-card__image">
+                        <img src="images/shirt-1.jpeg" alt="Signature Tee">
                         <div class="product-card__actions">
-                            <button class="product-card__btn product-card__btn--primary" data-name="Signature Tee - Midnight" data-price="85">Add to Bag</button>
-                            <button class="product-card__btn product-card__btn--secondary">Quick View</button>
+                            <button class="product-card__btn" data-name="Signature Tee" data-price="85">Add to Bag — $85</button>
                         </div>
                     </div>
                     <div class="product-card__info">
-                        <h3 class="product-card__name">Signature Tee - Midnight</h3>
-                        <div class="product-card__meta">
-                            <span class="product-card__price">$85</span>
-                            <span class="product-card__status">In Stock</span>
+                        <h3 class="product-card__name">Signature Tee</h3>
+                        <span class="product-card__price">$85</span>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="apparel">
+                    <div class="product-card__image">
+                        <img src="images/shirt-2.jpeg" alt="Signature Tee White">
+                        <div class="product-card__actions">
+                            <button class="product-card__btn" data-name="Signature Tee White" data-price="85">Add to Bag — $85</button>
                         </div>
+                    </div>
+                    <div class="product-card__info">
+                        <h3 class="product-card__name">Signature Tee White</h3>
+                        <span class="product-card__price">$85</span>
                     </div>
                 </article>
 
                 <article class="product-card" data-category="accessories">
-                    <div class="product-card__image-wrapper">
-                        <span class="product-card__badge product-card__badge--hot">1 of 10</span>
-                        <div class="product-card__image">
-                            <img src="images/bucket-hat-1.jpeg" alt="Artist Series Cap">
-                        </div>
+                    <div class="product-card__image">
+                        <img src="images/bucket-hat-1.jpeg" alt="Bucket Hat">
                         <div class="product-card__actions">
-                            <button class="product-card__btn product-card__btn--primary" data-name="Artist Series Cap" data-price="125">Add to Bag</button>
-                            <button class="product-card__btn product-card__btn--secondary">Quick View</button>
+                            <button class="product-card__btn" data-name="Bucket Hat" data-price="125">Add to Bag — $125</button>
                         </div>
                     </div>
                     <div class="product-card__info">
-                        <h3 class="product-card__name">Artist Series Cap</h3>
-                        <div class="product-card__meta">
-                            <span class="product-card__price">$125</span>
-                            <span class="product-card__status product-card__status--low">Low Stock</span>
-                        </div>
+                        <h3 class="product-card__name">Bucket Hat</h3>
+                        <span class="product-card__price">$125</span>
                     </div>
                 </article>
 
                 <article class="product-card" data-category="apparel">
-                    <div class="product-card__image-wrapper">
-                        <span class="product-card__badge">1 of 100</span>
-                        <div class="product-card__image">
-                            <img src="images/jersey-1.jpeg" alt="Embroidery Track Pants">
-                        </div>
+                    <div class="product-card__image">
+                        <img src="images/jersey-1.jpeg" alt="Track Pants">
                         <div class="product-card__actions">
-                            <button class="product-card__btn product-card__btn--primary" data-name="Embroidery Track Pants" data-price="220">Add to Bag</button>
-                            <button class="product-card__btn product-card__btn--secondary">Quick View</button>
+                            <button class="product-card__btn" data-name="Track Pants" data-price="220">Add to Bag — $220</button>
                         </div>
                     </div>
                     <div class="product-card__info">
-                        <h3 class="product-card__name">Embroidery Track Pants</h3>
-                        <div class="product-card__meta">
-                            <span class="product-card__price">$220</span>
-                            <span class="product-card__status">Pre-order</span>
-                        </div>
+                        <h3 class="product-card__name">Track Pants</h3>
+                        <span class="product-card__price">$220</span>
                     </div>
                 </article>
 
                 <article class="product-card" data-category="outerwear">
-                    <div class="product-card__image-wrapper">
-                        <span class="product-card__badge">1 of 30</span>
-                        <div class="product-card__image">
-                            <img src="images/jacket-1.jpeg" alt="Tactical Vest">
-                        </div>
+                    <div class="product-card__image">
+                        <img src="images/jacket-1.jpeg" alt="Tactical Vest">
                         <div class="product-card__actions">
-                            <button class="product-card__btn product-card__btn--primary" data-name="Tactical Vest" data-price="345">Add to Bag</button>
-                            <button class="product-card__btn product-card__btn--secondary">Quick View</button>
+                            <button class="product-card__btn" data-name="Tactical Vest" data-price="345">Add to Bag — $345</button>
                         </div>
                     </div>
                     <div class="product-card__info">
                         <h3 class="product-card__name">Tactical Vest</h3>
-                        <div class="product-card__meta">
-                            <span class="product-card__price">$345</span>
-                            <span class="product-card__status">In Stock</span>
-                        </div>
+                        <span class="product-card__price">$345</span>
                     </div>
                 </article>
 
                 <article class="product-card" data-category="outerwear">
-                    <div class="product-card__image-wrapper">
-                        <span class="product-card__badge product-card__badge--exclusive">1 of 5</span>
-                        <div class="product-card__image">
-                            <img src="images/jacket-8.jpeg" alt="Founder's Jacket">
-                        </div>
+                    <div class="product-card__image">
+                        <img src="images/jacket-8.jpeg" alt="Founders Jacket">
                         <div class="product-card__actions">
-                            <button class="product-card__btn product-card__btn--primary" data-name="Founder's Jacket" data-price="890">Add to Bag</button>
-                            <button class="product-card__btn product-card__btn--secondary">Quick View</button>
+                            <button class="product-card__btn" data-name="Founders Jacket" data-price="890">Add to Bag — $890</button>
                         </div>
                     </div>
                     <div class="product-card__info">
-                        <h3 class="product-card__name">Founder's Jacket</h3>
-                        <div class="product-card__meta">
-                            <span class="product-card__price">$890</span>
-                            <span class="product-card__status product-card__status--rare">Only 2 Left</span>
-                        </div>
+                        <h3 class="product-card__name">Founders Jacket</h3>
+                        <span class="product-card__price">$890</span>
                     </div>
                 </article>
-            </div>
-        </div>
-    </section>
 
-    <section class="features">
-        <div class="features__container">
-            <div class="features__grid">
-                <div class="feature">
-                    <div class="feature__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                        </svg>
+                <article class="product-card" data-category="apparel">
+                    <div class="product-card__image">
+                        <img src="images/heavy-tshirt-1.jpeg" alt="Heavy T-Shirt">
+                        <div class="product-card__actions">
+                            <button class="product-card__btn" data-name="Heavy T-Shirt" data-price="95">Add to Bag — $95</button>
+                        </div>
                     </div>
-                    <h3 class="feature__title">Limited Drops</h3>
-                    <p class="feature__text">Max 50 units per design. Once they're gone, they're gone forever.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                        </svg>
+                    <div class="product-card__info">
+                        <h3 class="product-card__name">Heavy T-Shirt</h3>
+                        <span class="product-card__price">$95</span>
                     </div>
-                    <h3 class="feature__title">Free Shipping</h3>
-                    <p class="feature__text">Free worldwide shipping on all orders over $200.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature__title">Authenticity Guaranteed</h3>
-                    <p class="feature__text">Every piece comes with verified provenance and certificate.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+                </article>
 
-    <section class="newsletter">
-        <div class="newsletter__container">
-            <div class="newsletter__content">
-                <h2 class="newsletter__title">Never Miss a Drop</h2>
-                <p class="newsletter__text">Get early access to limited releases. No spam, just the good stuff.</p>
-                <form class="newsletter__form">
-                    <input type="email" class="newsletter__input" placeholder="Enter your email" required>
-                    <button type="submit" class="btn btn--primary">Subscribe</button>
-                </form>
+                <article class="product-card" data-category="apparel">
+                    <div class="product-card__image">
+                        <img src="images/crop-top-1.jpeg" alt="Crop Top">
+                        <div class="product-card__actions">
+                            <button class="product-card__btn" data-name="Crop Top" data-price="75">Add to Bag — $75</button>
+                        </div>
+                    </div>
+                    <div class="product-card__info">
+                        <h3 class="product-card__name">Crop Top</h3>
+                        <span class="product-card__price">$75</span>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="outerwear">
+                    <div class="product-card__image">
+                        <img src="images/jacket-4.jpeg" alt="Bomber Jacket">
+                        <div class="product-card__actions">
+                            <button class="product-card__btn" data-name="Bomber Jacket" data-price="295">Add to Bag — $295</button>
+                        </div>
+                    </div>
+                    <div class="product-card__info">
+                        <h3 class="product-card__name">Bomber Jacket</h3>
+                        <span class="product-card__price">$295</span>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="apparel">
+                    <div class="product-card__image">
+                        <img src="images/hoody-2.jpeg" alt="Pullover Hoodie">
+                        <div class="product-card__actions">
+                            <button class="product-card__btn" data-name="Pullover Hoodie" data-price="175">Add to Bag — $175</button>
+                        </div>
+                    </div>
+                    <div class="product-card__info">
+                        <h3 class="product-card__name">Pullover Hoodie</h3>
+                        <span class="product-card__price">$175</span>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="accessories">
+                    <div class="product-card__image">
+                        <img src="images/bucket-hat-2.jpeg" alt="Canvas Cap">
+                        <div class="product-card__actions">
+                            <button class="product-card__btn" data-name="Canvas Cap" data-price="95">Add to Bag — $95</button>
+                        </div>
+                    </div>
+                    <div class="product-card__info">
+                        <h3 class="product-card__name">Canvas Cap</h3>
+                        <span class="product-card__price">$95</span>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
@@ -328,42 +252,40 @@
         <div class="footer__container">
             <div class="footer__top">
                 <div class="footer__brand">
-                    <a href="#" class="footer__logo">
-                        <span class="footer__logo-text">SF</span>
-                    </a>
+                    <a href="#" class="footer__logo">Stanfass</a>
                     <p class="footer__tagline">Limited edition streetwear. Once they're gone, they're gone forever.</p>
                 </div>
                 
-                <div class="footer__links-grid">
-                    <div class="footer__links-col">
-                        <h4 class="footer__links-title">Shop</h4>
+                <div class="footer__links">
+                    <div class="footer__col">
+                        <h4>Shop</h4>
                         <a href="#products">All Products</a>
                         <a href="#">New Arrivals</a>
                         <a href="#">Best Sellers</a>
                     </div>
-                    <div class="footer__links-col">
-                        <h4 class="footer__links-title">Help</h4>
+                    <div class="footer__col">
+                        <h4>Help</h4>
                         <a href="#">Shipping</a>
                         <a href="#">Returns</a>
                         <a href="#">FAQ</a>
                     </div>
-                    <div class="footer__links-col">
-                        <h4 class="footer__links-title">Company</h4>
-                        <a href="#about">About</a>
+                    <div class="footer__col">
+                        <h4>Company</h4>
+                        <a href="#">About</a>
                         <a href="#">Contact</a>
                         <a href="#">Privacy</a>
                     </div>
                 </div>
                 
                 <div class="footer__social">
-                    <a href="#" class="footer__social-link" aria-label="Instagram">
+                    <a href="#" aria-label="Instagram">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="2" width="20" height="20" rx="5"/>
                             <circle cx="12" cy="12" r="4"/>
                             <circle cx="18" cy="6" r="1.5" fill="currentColor"/>
                         </svg>
                     </a>
-                    <a href="#" class="footer__social-link" aria-label="Twitter">
+                    <a href="#" aria-label="Twitter">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.4-8M20 4l-6.4 8"/>
                         </svg>
@@ -372,7 +294,7 @@
             </div>
             
             <div class="footer__bottom">
-                <p class="footer__copyright">&copy; 2026 Stanfass. All rights reserved.</p>
+                <p>&copy; 2026 Stanfass. All rights reserved.</p>
             </div>
         </div>
     </footer>
