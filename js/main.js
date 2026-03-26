@@ -22,6 +22,120 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ===============================
+  // Cart Drawer
+  // ===============================
+  const cartToggle = document.getElementById('cart-toggle');
+  const cartDrawer = document.getElementById('cart-drawer');
+  const cartClose = document.getElementById('cart-close');
+  const cartOverlay = document.getElementById('cart-overlay');
+  const cartContent = document.getElementById('cart-content');
+  const cartCount = document.getElementById('cart-count');
+  const cartTotal = document.getElementById('cart-total');
+
+  let cart = [];
+
+  function updateCart() {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    cartCount.textContent = totalItems;
+    cartTotal.textContent = `$${totalPrice}`;
+
+    if (cart.length === 0) {
+      cartContent.innerHTML = '<div class="cart-empty"><p>Your bag is empty</p></div>';
+    } else {
+      cartContent.innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+          <div class="cart-item__info">
+            <h4 class="cart-item__name">${item.name}</h4>
+            <span class="cart-item__price">$${item.price}</span>
+          </div>
+          <div class="cart-item__actions">
+            <button class="cart-item__remove" data-index="${index}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.cart-item__remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const index = parseInt(e.currentTarget.dataset.index);
+          cart.splice(index, 1);
+          updateCart();
+        });
+      });
+    }
+  }
+
+  if (cartToggle && cartDrawer) {
+    cartToggle.addEventListener('click', () => {
+      cartDrawer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    const closeCart = () => {
+      cartDrawer.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    if (cartClose) cartClose.addEventListener('click', closeCart);
+    if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
+  }
+
+  // ===============================
+  // Add to Bag
+  // ===============================
+  document.querySelectorAll('.product-card__btn--primary').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const name = btn.dataset.name;
+      const price = parseInt(btn.dataset.price);
+
+      const existingItem = cart.find(item => item.name === name);
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({ name, price, quantity: 1 });
+      }
+
+      updateCart();
+
+      btn.textContent = 'Added!';
+      setTimeout(() => {
+        btn.textContent = 'Add to Bag';
+      }, 1000);
+    });
+  });
+
+  // ===============================
+  // Product Filters
+  // ===============================
+  const filterBtns = document.querySelectorAll('.products__filter');
+  const productCards = document.querySelectorAll('.product-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+
+      productCards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = 'block';
+          setTimeout(() => card.classList.add('animate-in'), 10);
+        } else {
+          card.style.display = 'none';
+          card.classList.remove('animate-in');
+        }
+      });
+    });
+  });
+
+  // ===============================
   // Smooth Scroll
   // ===============================
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -66,9 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Elements to animate
   const animateElements = document.querySelectorAll(
-    '.hero__content, .hero__scroll, .hero__brand, .about__header, .about__story, .about__values, .about__statement, ' +
-    '.collections__header, .product-card, .exclusivity__header, .exclusivity__grid, .exclusivity__ticker, ' +
-    '.contact__header, .contact__info, .contact__cta, .footer__brand, .footer__social'
+    '.hero__content, .products__header, .product-card, .feature, .newsletter__content, .footer__brand, .footer__social'
   );
 
   animateElements.forEach(el => {
@@ -101,30 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===============================
-  // Hero Scroll Indicator Click
-  // ===============================
-  const heroScroll = document.querySelector('.hero__scroll');
-  if (heroScroll) {
-    heroScroll.addEventListener('click', () => {
-      const aboutSection = document.querySelector('#about');
-      if (aboutSection) {
-        const navHeight = document.querySelector('.nav').offsetHeight;
-        const targetPosition = aboutSection.getBoundingClientRect().top + window.pageYOffset - navHeight;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }
-    });
-  }
-
-  // ===============================
   // Product Card Hover Interactions
   // ===============================
-  const productCards = document.querySelectorAll('.product-card');
+  const productCardsAll = document.querySelectorAll('.product-card');
   
-  productCards.forEach(card => {
+  productCardsAll.forEach(card => {
     card.addEventListener('mouseenter', () => {
       card.classList.add('product-card--hovered');
     });
@@ -150,38 +243,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===============================
-  // Parallax Effect on Hero
-  // ===============================
-  const heroBg = document.querySelector('.hero__bg');
-  
-  if (heroBg) {
-    window.addEventListener('scroll', () => {
-      const scrolled = window.pageYOffset;
-      const rate = scrolled * 0.3;
-      
-      heroBg.style.transform = `translateY(${rate}px)`;
-    });
-  }
-
-  // ===============================
-  // Exclusivity Ticker Hover Pause
-  // ===============================
-  const ticker = document.querySelector('.exclusivity__ticker');
-  
-  if (ticker) {
-    ticker.addEventListener('mouseenter', () => {
-      ticker.classList.add('paused');
-    });
-    
-    ticker.addEventListener('mouseleave', () => {
-      ticker.classList.remove('paused');
-    });
-  }
-
-  // ===============================
   // Link Hover Underline Animation
   // ===============================
-  const links = document.querySelectorAll('.nav__link, .footer__social-link, .footer__links a');
+  const links = document.querySelectorAll('.nav__link, .footer__social-link, .footer__links a, .footer__links-col a');
   
   links.forEach(link => {
     link.addEventListener('mouseenter', () => {
@@ -194,40 +258,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===============================
-  // Cursor Trail Effect (Optional Enhancement)
+  // Newsletter Form
   // ===============================
-  let cursorX = 0;
-  let cursorY = 0;
-  let cursorVisible = false;
-  
-  document.addEventListener('mousemove', (e) => {
-    cursorX = e.clientX;
-    cursorY = e.clientY;
-    
-    if (!cursorVisible) {
-      cursorVisible = true;
-    }
-  });
-
-  // ===============================
-  // Reveal Elements on Scroll (Staggered)
-  // ===============================
-  const staggerGroups = document.querySelectorAll('.about__values, .collections__grid, .exclusivity__grid');
-  
-  const staggerObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const items = entry.target.querySelectorAll(':scope > *');
-        items.forEach((item, index) => {
-          item.style.transitionDelay = `${index * 100}ms`;
-          item.classList.add('animate-in');
-        });
-        staggerObserver.unobserve(entry.target);
+  const newsletterForm = document.querySelector('.newsletter__form');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = newsletterForm.querySelector('input');
+      const btn = newsletterForm.querySelector('button');
+      
+      if (input.value) {
+        btn.textContent = 'Subscribed!';
+        input.value = '';
+        setTimeout(() => {
+          btn.textContent = 'Subscribe';
+        }, 2000);
       }
     });
-  }, { threshold: 0.2 });
-
-  staggerGroups.forEach(group => {
-    staggerObserver.observe(group);
-  });
+  }
 });
