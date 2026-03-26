@@ -1653,3 +1653,316 @@ a.contact__item-value:hover {
     text-align: center;
   }
 }
+
+/* ============================================
+   Scroll Animations
+   ============================================ */
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--duration-slower) var(--ease-out-expo),
+              transform var(--duration-slower) var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+.animate-on-scroll.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-on-scroll.animate-in .product-card__image,
+.animate-on-scroll.animate-in .product-card__info {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hero__content,
+.hero__scroll,
+.hero__brand {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.hero__content.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s var(--ease-out-expo),
+              transform 0.8s var(--ease-out-expo);
+}
+
+.hero__scroll.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s var(--ease-out-expo) 0.2s,
+              transform 0.8s var(--ease-out-expo) 0.2s;
+}
+
+.hero__brand.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s var(--ease-out-expo) 0.4s,
+              transform 0.8s var(--ease-out-expo) 0.4s;
+}
+
+/* ============================================
+   Nav Scroll States
+   ============================================ */
+
+.nav--scrolled {
+  background: rgba(15, 15, 26, 0.95);
+  padding: var(--space-3) var(--space-6);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.nav--hidden {
+  transform: translateY(-100%);
+}
+
+/* ============================================
+   Product Card Hover Effects
+   ============================================ */
+
+.product-card {
+  transition: transform var(--transition-normal) var(--ease-out-expo),
+              box-shadow var(--transition-normal) var(--ease-out-expo);
+}
+
+.product-card:hover,
+.product-card--hovered {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl), var(--shadow-glow-primary);
+}
+
+.product-card__image-wrapper {
+  overflow: hidden;
+}
+
+.product-card__overlay {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all var(--transition-normal) var(--ease-out-expo);
+}
+
+.product-card:hover .product-card__overlay,
+.product-card--hovered .product-card__overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-card__quick-view {
+  transition: transform var(--transition-normal) var(--ease-out-expo);
+}
+
+.product-card:hover .product-card__quick-view,
+.product-card--hovered .product-card__quick-view {
+  transform: scale(1.05);
+}
+
+.product-card__image {
+  transition: transform var(--transition-slow) var(--ease-out-expo);
+}
+
+.product-card:hover .product-card__image,
+.product-card--hovered .product-card__image {
+  transform: scale(1.08);
+}
+
+/* ============================================
+   Button Hover Effects
+   ============================================ */
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal) var(--ease-out-expo);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s var(--ease-out-expo);
+}
+
+.btn:hover::before,
+.btn--hovered::before {
+  left: 100%;
+}
+
+.btn--primary:hover,
+.btn--primary.btn--hovered {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 51, 102, 0.4);
+}
+
+.btn--ghost:hover,
+.btn--ghost.btn--hovered {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   Link Hover Effects
+   ============================================ */
+
+.nav__link,
+.footer__social-link,
+.footer__links a {
+  position: relative;
+}
+
+.nav__link::after,
+.footer__links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width var(--transition-normal) var(--ease-out-expo);
+}
+
+.nav__link:hover::after,
+.nav__link.link--hovered::after,
+.footer__links a:hover::after,
+.footer__links a.link--hovered::after {
+  width: 100%;
+}
+
+.footer__social-link {
+  transition: transform var(--transition-fast) var(--ease-out-expo),
+              color var(--transition-fast);
+}
+
+.footer__social-link:hover,
+.footer__social-link.link--hovered {
+  transform: translateY(-3px);
+  color: var(--color-primary);
+}
+
+/* ============================================
+   Exclusivity Ticker Pause
+   ============================================ */
+
+.exclusivity__ticker.paused .exclusivity__ticker-content {
+  animation-play-state: paused;
+}
+
+/* ============================================
+   Hero Parallax Fix
+   ============================================ */
+
+.hero__bg {
+  will-change: transform;
+}
+
+/* ============================================
+   Staggered Animation Delays
+   ============================================ */
+
+.about__values .about__value,
+.collections__grid .product-card,
+.exclusivity__grid .exclusivity__card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--duration-slower) var(--ease-out-expo),
+              transform var(--duration-slower) var(--ease-out-expo);
+}
+
+.about__values .about__value.animate-in,
+.collections__grid .product-card.animate-in,
+.exclusivity__grid .exclusivity__card.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about__value:nth-child(1) { transition-delay: 0ms; }
+.about__value:nth-child(2) { transition-delay: 100ms; }
+.about__value:nth-child(3) { transition-delay: 200ms; }
+
+.product-card:nth-child(1) { transition-delay: 0ms; }
+.product-card:nth-child(2) { transition-delay: 80ms; }
+.product-card:nth-child(3) { transition-delay: 160ms; }
+.product-card:nth-child(4) { transition-delay: 240ms; }
+.product-card:nth-child(5) { transition-delay: 320ms; }
+.product-card:nth-child(6) { transition-delay: 400ms; }
+
+.exclusivity__card:nth-child(1) { transition-delay: 0ms; }
+.exclusivity__card:nth-child(2) { transition-delay: 150ms; }
+.exclusivity__card:nth-child(3) { transition-delay: 300ms; }
+
+/* ============================================
+   Section Header Animations
+   ============================================ */
+
+.about__header,
+.collections__header,
+.exclusivity__header,
+.contact__header {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.about__header.animate-in,
+.collections__header.animate-in,
+.exclusivity__header.animate-in,
+.contact__header.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-slower) var(--ease-out-expo),
+              transform var(--duration-slower) var(--ease-out-expo);
+}
+
+.about__story.animate-in,
+.collections__header.animate-in {
+  transition: opacity var(--duration-slower) var(--ease-out-expo) 0.1s,
+              transform var(--duration-slower) var(--ease-out-expo) 0.1s;
+}
+
+.about__values.animate-in,
+.about__statement.animate-in {
+  transition: opacity var(--duration-slower) var(--ease-out-expo) 0.2s,
+              transform var(--duration-slower) var(--ease-out-expo) 0.2s;
+}
+
+.contact__info.animate-in {
+  transition: opacity var(--duration-slower) var(--ease-out-expo) 0.15s,
+              transform var(--duration-slower) var(--ease-out-expo) 0.15s;
+}
+
+.contact__cta.animate-in {
+  transition: opacity var(--duration-slower) var(--ease-out-expo) 0.25s,
+              transform var(--duration-slower) var(--ease-out-expo) 0.25s;
+}
+
+.footer__brand.animate-in,
+.footer__social.animate-in {
+  transition: opacity var(--duration-slower) var(--ease-out-expo),
+              transform var(--duration-slower) var(--ease-out-expo);
+}
+
+.footer__social.animate-in {
+  transition-delay: 0.1s;
+}
+
+/* ============================================
+   Exclusivity Section Animations
+   ============================================ */
+
+.exclusivity__ticker {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.exclusivity__ticker.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity var(--duration-slower) var(--ease-out-expo) 0.3s,
+              transform var(--duration-slower) var(--ease-out-expo) 0.3s;
+}
