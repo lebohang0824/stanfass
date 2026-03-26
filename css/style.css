@@ -2041,7 +2041,7 @@ button {
 .sticker--new {
   background: var(--color-street-yellow);
   color: black;
-  bottom: 8px;
+  top: 8px;
   left: 8px;
   transform: rotate(-10deg);
 }
