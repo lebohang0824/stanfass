@@ -359,6 +359,19 @@ body.menu-open {
   bottom: 0;
   left: 0;
   z-index: 0;
+  background-image: url('../images/hero-bg.jpeg');
+  background-size: cover;
+  background-position: center;
+}
+
+.hero__bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(15, 15, 26, 0.7);
 }
 
 .hero__bg-texture {
