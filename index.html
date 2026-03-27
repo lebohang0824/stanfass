@@ -537,6 +537,32 @@
     <script src="js/main.js"></script>
     <div class="graffiti-tag" style="top: 30%; left: 2%;">STREET</div>
     <div class="graffiti-tag" style="top: 60%; right: 2%;">DROPS</div>
+
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-drawer__overlay" id="cart-overlay"></div>
+        <div class="cart-drawer__panel">
+            <div class="cart-drawer__header">
+                <h3 class="cart-drawer__title">Your Bag</h3>
+                <button class="cart-drawer__close" id="cart-close" aria-label="Close cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="cart-drawer__content" id="cart-items">
+                <div class="cart-empty">
+                    <p>Your bag is empty</p>
+                </div>
+            </div>
+            <div class="cart-drawer__footer">
+                <div class="cart-drawer__subtotal">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">R0</span>
+                </div>
+                <button class="btn btn--primary cart-drawer__checkout">Checkout</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

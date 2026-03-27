@@ -145,6 +145,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===============================
   const cartToggle = document.getElementById('cart-toggle');
   const cartCount = document.getElementById('cart-count');
+  const cartDrawer = document.getElementById('cart-drawer');
+  const cartClose = document.getElementById('cart-close');
+  const cartOverlay = document.getElementById('cart-overlay');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartSubtotal = document.getElementById('cart-subtotal');
 
   let cart = [];
 
@@ -152,10 +157,96 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalItems;
 
+    renderCartItems();
+    updateSubtotal();
+
     if (cartToggle) {
       cartToggle.classList.add('bounce');
       setTimeout(() => cartToggle.classList.remove('bounce'), 500);
     }
+  }
+
+  function openCartDrawer() {
+    if (cartDrawer) {
+      cartDrawer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeCartDrawer() {
+    if (cartDrawer) {
+      cartDrawer.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function renderCartItems() {
+    if (!cartItemsContainer) return;
+
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = `
+        <div class="cart-empty">
+          <p>Your bag is empty</p>
+        </div>
+      `;
+      return;
+    }
+
+    cartItemsContainer.innerHTML = cart
+      .map(
+        (item) => `
+        <div class="cart-item" data-name="${item.name}">
+          <div class="cart-item__info">
+            <h4 class="cart-item__name">${item.name}</h4>
+            <p class="cart-item__price">R${item.price} x ${item.quantity}</p>
+          </div>
+          <button class="cart-item__remove" aria-label="Remove item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      `
+      )
+      .join('');
+
+    document.querySelectorAll('.cart-item__remove').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const itemEl = e.currentTarget.closest('.cart-item');
+        const itemName = itemEl.dataset.name;
+        removeFromCart(itemName);
+      });
+    });
+  }
+
+  function updateSubtotal() {
+    if (!cartSubtotal) return;
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    cartSubtotal.textContent = `R${total}`;
+  }
+
+  function removeFromCart(itemName) {
+    const index = cart.findIndex((item) => item.name === itemName);
+    if (index > -1) {
+      if (cart[index].quantity > 1) {
+        cart[index].quantity--;
+      } else {
+        cart.splice(index, 1);
+      }
+      updateCart();
+    }
+  }
+
+  if (cartToggle) {
+    cartToggle.addEventListener('click', openCartDrawer);
+  }
+
+  if (cartClose) {
+    cartClose.addEventListener('click', closeCartDrawer);
+  }
+
+  if (cartOverlay) {
+    cartOverlay.addEventListener('click', closeCartDrawer);
   }
 
   // ===============================
