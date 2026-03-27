@@ -318,21 +318,55 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===============================
-  // Save/Heart Button
+  // Save/Heart Button (Favorites)
   // ===============================
+  let favorites = JSON.parse(localStorage.getItem('stanfass_favorites')) || [];
+
+  function initFavorites() {
+    document.querySelectorAll('.save-btn').forEach((btn) => {
+      const card = btn.closest('.product-card');
+      const addBtn = card ? card.querySelector('.add-btn') : null;
+      const name = addBtn ? addBtn.dataset.name : null;
+
+      if (name && favorites.includes(name)) {
+        btn.classList.add('active');
+        const svg = btn.querySelector('svg');
+        if (svg) svg.setAttribute('fill', 'currentColor');
+      }
+    });
+  }
+
+  function toggleFavorite(name, btn) {
+    const index = favorites.indexOf(name);
+    const svg = btn.querySelector('svg');
+
+    if (index > -1) {
+      favorites.splice(index, 1);
+      btn.classList.remove('active');
+      if (svg) svg.setAttribute('fill', 'none');
+    } else {
+      favorites.push(name);
+      btn.classList.add('active');
+      if (svg) svg.setAttribute('fill', 'currentColor');
+    }
+
+    localStorage.setItem('stanfass_favorites', JSON.stringify(favorites));
+  }
+
   document.querySelectorAll('.save-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      btn.classList.toggle('active');
+      const card = btn.closest('.product-card');
+      const addBtn = card ? card.querySelector('.add-btn') : null;
+      const name = addBtn ? addBtn.dataset.name : null;
 
-      const svg = btn.querySelector('svg');
-      if (btn.classList.contains('active')) {
-        svg.setAttribute('fill', 'currentColor');
-      } else {
-        svg.setAttribute('fill', 'none');
+      if (name) {
+        toggleFavorite(name, btn);
       }
     });
   });
+
+  initFavorites();
 
   // ===============================
   // Color Swatches
