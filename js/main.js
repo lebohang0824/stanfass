@@ -151,16 +151,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartItemsContainer = document.getElementById('cart-items');
   const cartSubtotal = document.getElementById('cart-subtotal');
 
-  let cart = [];
+  let cart = JSON.parse(localStorage.getItem('stanfass_cart')) || [];
 
-  function updateCart() {
+  function initCart() {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalItems;
+    renderCartItems();
+    updateSubtotal();
+  }
+
+  function saveCart() {
+    localStorage.setItem('stanfass_cart', JSON.stringify(cart));
+  }
+
+  function updateCart(animate = false) {
+    saveCart();
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalItems;
 
     renderCartItems();
     updateSubtotal();
 
-    if (cartToggle) {
+    if (animate && cartToggle) {
       cartToggle.classList.add('bounce');
       setTimeout(() => cartToggle.classList.remove('bounce'), 500);
     }
@@ -233,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         cart.splice(index, 1);
       }
-      updateCart();
+      updateCart(true);
     }
   }
 
@@ -248,6 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (cartOverlay) {
     cartOverlay.addEventListener('click', closeCartDrawer);
   }
+
+  initCart();
 
   // ===============================
   // Add to Bag (New class: .add-btn)
@@ -265,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cart.push({ name, price, quantity: 1 });
       }
 
-      updateCart();
+      updateCart(true);
 
       btn.classList.add('added');
       setTimeout(() => {
