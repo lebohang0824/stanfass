@@ -2191,9 +2191,9 @@ button {
 .sticker--new {
   background: var(--color-street-yellow);
   color: black;
-  top: 8px;
-  left: 8px;
-  transform: rotate(-10deg);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-10deg);
 }
 
 .sticker--sold {
