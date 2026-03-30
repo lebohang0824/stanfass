@@ -385,9 +385,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (modalAddBtn && currentModalProduct) {
+  if (modalAddBtn) {
     modalAddBtn.addEventListener('click', () => {
-      if (!currentModalProduct) return;
+      if (!currentModalProduct) {
+        return;
+      }
 
       const quantity = parseInt(modalQtyInput.value);
 
