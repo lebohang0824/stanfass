@@ -207,10 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
     cartItemsContainer.innerHTML = cart
       .map(
         (item) => `
-        <div class="cart-item" data-name="${item.name}">
+        <div class="cart-item" data-name="${item.name}" data-size="${item.size || ''}">
           <div class="cart-item__info">
             <h4 class="cart-item__name">${item.name}</h4>
-            <p class="cart-item__price">R${item.price} x ${item.quantity}</p>
+            <p class="cart-item__price">R${item.price} x ${item.quantity}${item.size ? ` (${item.size})` : ''}</p>
           </div>
           <button class="cart-item__remove" aria-label="Remove item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -226,7 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', (e) => {
         const itemEl = e.currentTarget.closest('.cart-item');
         const itemName = itemEl.dataset.name;
-        removeFromCart(itemName);
+        const itemSize = itemEl.dataset.size || null;
+        removeFromCart(itemName, itemSize);
       });
     });
   }
@@ -237,8 +238,13 @@ document.addEventListener('DOMContentLoaded', () => {
     cartSubtotal.textContent = `R${total}`;
   }
 
-  function removeFromCart(itemName) {
-    const index = cart.findIndex((item) => item.name === itemName);
+  function removeFromCart(itemName, itemSize = null) {
+    const index = cart.findIndex((item) => {
+      if (itemSize) {
+        return item.name === itemName && item.size === itemSize;
+      }
+      return item.name === itemName && !item.size;
+    });
     if (index > -1) {
       if (cart[index].quantity > 1) {
         cart[index].quantity--;
@@ -289,31 +295,135 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===============================
-  // Click product card to add to cart
+  // Product Modal
   // ===============================
-  document.querySelectorAll('.product-card').forEach((card) => {
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.save-btn') || e.target.closest('.add-btn')) return;
+  const productModal = document.getElementById('product-modal');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const modalClose = document.getElementById('modal-close');
+  const modalProductImage = document.getElementById('modal-product-image');
+  const modalProductName = document.getElementById('modal-product-name');
+  const modalProductPrice = document.getElementById('modal-product-price');
+  const modalSizeSelector = document.getElementById('modal-size-selector');
+  const modalQtyInput = document.getElementById('modal-qty-input');
+  const qtyMinus = document.getElementById('qty-minus');
+  const qtyPlus = document.getElementById('qty-plus');
+  const modalAddBtn = document.getElementById('modal-add-btn');
 
-      const addBtn = card.querySelector('.add-btn');
-      if (!addBtn) return;
+  let selectedSize = 'M';
+  let currentModalProduct = null;
 
-      const name = addBtn.dataset.name;
-      const price = parseInt(addBtn.dataset.price);
+  function openProductModal(card) {
+    const addBtn = card.querySelector('.add-btn');
+    if (!addBtn) return;
 
-      const existingItem = cart.find((item) => item.name === name);
+    const img = card.querySelector('.product-card__image img');
+    const name = addBtn.dataset.name;
+    const price = parseInt(addBtn.dataset.price);
+    const hasSizeSelector = card.querySelector('.size-selector');
+
+    currentModalProduct = { name, price };
+
+    modalProductImage.src = img.src;
+    modalProductImage.alt = name;
+    modalProductName.textContent = name;
+    modalProductPrice.textContent = `R${price}`;
+    modalQtyInput.value = 1;
+    selectedSize = hasSizeSelector ? 'M' : null;
+
+    const sizeSection = modalSizeSelector.closest('.product-modal__size');
+    if (sizeSection) {
+      sizeSection.style.display = hasSizeSelector ? 'block' : 'none';
+    }
+
+    modalSizeSelector.querySelectorAll('span').forEach((s) => {
+      s.classList.remove('active');
+      if (s.dataset.size === 'M') {
+        s.classList.add('active');
+      }
+    });
+
+    productModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProductModal() {
+    productModal.classList.remove('active');
+    document.body.style.overflow = '';
+    currentModalProduct = null;
+  }
+
+  if (productModal) {
+    modalOverlay.addEventListener('click', closeProductModal);
+    modalClose.addEventListener('click', closeProductModal);
+  }
+
+  if (modalSizeSelector) {
+    modalSizeSelector.querySelectorAll('span').forEach((size) => {
+      size.addEventListener('click', () => {
+        modalSizeSelector.querySelectorAll('span').forEach((s) => s.classList.remove('active'));
+        size.classList.add('active');
+        selectedSize = size.dataset.size;
+      });
+    });
+  }
+
+  if (qtyMinus) {
+    qtyMinus.addEventListener('click', () => {
+      const current = parseInt(modalQtyInput.value);
+      if (current > 1) {
+        modalQtyInput.value = current - 1;
+      }
+    });
+  }
+
+  if (qtyPlus) {
+    qtyPlus.addEventListener('click', () => {
+      const current = parseInt(modalQtyInput.value);
+      if (current < 10) {
+        modalQtyInput.value = current + 1;
+      }
+    });
+  }
+
+  if (modalAddBtn && currentModalProduct) {
+    modalAddBtn.addEventListener('click', () => {
+      if (!currentModalProduct) return;
+
+      const quantity = parseInt(modalQtyInput.value);
+
+      const existingItem = cart.find((item) => {
+        if (selectedSize) {
+          return item.name === currentModalProduct.name && item.size === selectedSize;
+        }
+        return item.name === currentModalProduct.name && !item.size;
+      });
+
       if (existingItem) {
-        existingItem.quantity++;
+        existingItem.quantity += quantity;
       } else {
-        cart.push({ name, price, quantity: 1 });
+        cart.push({
+          name: currentModalProduct.name,
+          price: currentModalProduct.price,
+          size: selectedSize || null,
+          quantity: quantity
+        });
       }
 
       updateCart(true);
+      closeProductModal();
 
-      addBtn.classList.add('added');
-      setTimeout(() => {
-        addBtn.classList.remove('added');
-      }, 1500);
+      const cartToggle = document.getElementById('cart-toggle');
+      if (cartToggle) {
+        cartToggle.classList.add('bounce');
+        setTimeout(() => cartToggle.classList.remove('bounce'), 500);
+      }
+    });
+  }
+
+  document.querySelectorAll('.product-card').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.save-btn') || e.target.closest('.add-btn')) return;
+      openProductModal(card);
     });
   });
 

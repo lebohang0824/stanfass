@@ -564,6 +564,46 @@
             </div>
         </div>
     </div>
+
+    <div class="product-modal" id="product-modal">
+        <div class="product-modal__overlay" id="modal-overlay"></div>
+        <div class="product-modal__panel">
+            <button class="product-modal__close" id="modal-close" aria-label="Close modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="product-modal__content">
+                <div class="product-modal__image">
+                    <img src="" alt="" id="modal-product-image">
+                </div>
+                <div class="product-modal__details">
+                    <h3 class="product-modal__name" id="modal-product-name"></h3>
+                    <p class="product-modal__price" id="modal-product-price"></p>
+                    <div class="product-modal__size">
+                        <span class="product-modal__label">Size</span>
+                        <div class="product-modal__sizes" id="modal-size-selector">
+                            <span data-size="S">S</span>
+                            <span data-size="M">M</span>
+                            <span data-size="L">L</span>
+                            <span data-size="XL">XL</span>
+                        </div>
+                    </div>
+                    <div class="product-modal__quantity">
+                        <span class="product-modal__label">Quantity</span>
+                        <div class="product-modal__qty">
+                            <button class="qty-btn qty-btn--minus" id="qty-minus">-</button>
+                            <input type="number" id="modal-qty-input" value="1" min="1" max="10">
+                            <button class="qty-btn qty-btn--plus" id="qty-plus">+</button>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary product-modal__add" id="modal-add-btn">
+                        Add to Bag
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
